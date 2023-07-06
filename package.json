@@ -1,0 +1,11 @@
+{
+  "name": "music-tape",
+  "packageManager": "yarn@3.5.0",
+  "workspaces": [
+    "./*"
+  ],
+  "lint-staged": {
+    "*.ts": "eslint --fix",
+    "*.{ts,json,yml,md}": "prettier --write"
+  }
+}

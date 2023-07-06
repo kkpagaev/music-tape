@@ -1,0 +1,35 @@
+{
+  "name": "server",
+  "packageManager": "yarn@3.5.0",
+  "scripts": {
+    "dev": "nodemon --quiet src/index.ts",
+    "debug": "nodemon --exec 'node --inspect -r tsconfig-paths/register -r ts-node/register src/index.ts'",
+    "exec": "node --experimental-specifier-resolution=node --loader ts-node/esm",
+    "start": "yarn run exec .",
+    "start:node": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/index.js",
+    "build": "tsc",
+    "db:drop": "prisma migrate reset",
+    "db:migrate": "prisma migrate deploy",
+    "db:seed": "yarn run exec prisma/seed.ts",
+    "db:update": "prisma migrate dev"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.16.2",
+    "fastify": "^4.19.2",
+    "pg": "^8.11.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.0",
+    "@types/pg": "^8.10.2",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
+    "eslint": "^8.44.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.22",
+    "prettier": "^3.0.0",
+    "prisma": "^4.16.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}
