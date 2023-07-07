@@ -3,5 +3,16 @@
   "packageManager": "yarn@3.5.0",
   "workspaces": [
     "./*"
-  ]
+  ],
+  "lint-staged": {
+    "*.ts": "eslint --fix",
+    "*.{ts,json,yml,md}": "prettier --write"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3"
+  },
+  "scripts": {
+    "prepare": "husky install"
+  }
 }
