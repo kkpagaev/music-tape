@@ -1,43 +1,32 @@
-import fastify from "fastify"
-
+import Fastify from "fastify"
+import * as dotenv from "dotenv"
 import { PrismaClient } from "@prisma/client"
+import { userPlugin } from "./api/users"
+import { prisma } from "./prisma"
 
-const prisma = new PrismaClient()
+dotenv.config()
 
-async function createUser() {
-  const user = await prisma.user.create({
-    data: {
-      name: "Vlad",
-      email: "vlad@prisma.io",
-    },
-  })
-  console.log(user)
-  return user
+declare module "fastify" {
+  interface FastifyInstance {
+    prisma: PrismaClient
+  }
 }
+
 async function main() {
-  const r = fastify()
-
-  r.get("/users", async () => {
-    const users = await prisma.user.findMany()
-    return users
+  const fastify = Fastify({
+    logger: true,
   })
 
-  r.post("/users", async () => {
-    return await createUser()
-  })
-
-  r.get("/", async () => {
-    return {
-      hello: "world!",
-    }
+  await fastify.register(userPlugin, {
+    prefix: "/users",
   })
 
   // Run the server!
   const start = async () => {
     try {
-      await r.listen({ port: 3000 })
+      await fastify.listen({ port: 3000 })
     } catch (err) {
-      r.log.error(err)
+      fastify.log.error(err)
       process.exit(1)
     }
   }
@@ -45,6 +34,7 @@ async function main() {
   await start()
 }
 
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 main()
   .then(async () => {
     await prisma.$disconnect()
