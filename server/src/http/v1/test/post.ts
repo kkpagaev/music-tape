@@ -1,19 +1,18 @@
-import { FastifyRequest, RouteOptions } from "fastify"
+import { RouteOptions } from "fastify"
 import { z } from "zod"
+import { Req } from "../../../helpers/request"
 
-const BodySchema = z.object({
+const Schema = z.object({
   id: z.enum(["foo", "bar"]),
 })
-
-type Body = z.infer<typeof BodySchema>
 
 export const options: RouteOptions = {
   method: "POST",
   url: "/",
   schema: {
-    body: BodySchema,
+    body: Schema,
   },
-  handler: async ({ body }: FastifyRequest<{ Body: Body }>, rep) => {
+  handler: async ({ body }: Req<typeof Schema>, rep) => {
     return rep.code(200).send({
       foo: body.id,
     })
