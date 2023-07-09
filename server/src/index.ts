@@ -7,6 +7,7 @@ import swagger from "@fastify/swagger"
 import swaggerUi from "@fastify/swagger-ui"
 import fp from "fastify-plugin"
 import fastifyCors from "@fastify/cors"
+import ws from "@fastify/websocket"
 
 dotenv.config()
 
@@ -64,6 +65,10 @@ async function main() {
     origin: true,
     methods: ["GET", "POST", "PATCH", "DELETE"],
     credentials: true,
+  })
+
+  await fastify.register(ws, {
+    logLevel: "info",
   })
 
   await fastify.ready()
