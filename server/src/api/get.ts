@@ -1,7 +1,7 @@
 import { RouteOptions } from "fastify"
 import { prisma } from "../prisma"
 
-export default <RouteOptions>{
+export const options: RouteOptions = {
   method: "GET",
   url: "/",
   handler: async () => {
