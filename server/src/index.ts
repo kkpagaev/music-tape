@@ -2,6 +2,7 @@ import Fastify from "fastify"
 import * as dotenv from "dotenv"
 import { PrismaClient } from "@prisma/client"
 import { prisma } from "./prisma"
+import formBody from "@fastify/formbody"
 
 dotenv.config()
 
@@ -15,7 +16,9 @@ async function main() {
   const fastify = Fastify({
     logger: true,
   })
-  const { plugin, prefix } = await import("./api/users")
+  const { plugin, prefix } = await import("./http")
+
+  await fastify.register(formBody)
 
   await fastify.register(plugin, {
     prefix,

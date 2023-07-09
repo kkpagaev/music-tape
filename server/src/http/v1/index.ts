@@ -1,7 +1,7 @@
 import { createPlugin } from "../../helpers/createPlugin"
 
-export const prefix = "/test"
+export const prefix = "/v1"
 
 export const plugin = createPlugin({
-  routes: [import("./get")],
+  plugins: [import("./test")],
 })
