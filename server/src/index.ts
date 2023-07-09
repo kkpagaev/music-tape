@@ -6,6 +6,7 @@ import formBody from "@fastify/formbody"
 import swagger from "@fastify/swagger"
 import swaggerUi from "@fastify/swagger-ui"
 import fp from "fastify-plugin"
+import fastifyCors from "@fastify/cors"
 
 dotenv.config()
 
@@ -23,7 +24,7 @@ const swaggerPlugin = fp(async (fastify: FastifyInstance) => {
         description: "Testing the Fastify swagger API",
         version: "0.1.0",
       },
-      host: "localhost",
+      host: "localhost:3000",
       consumes: ["application/json"],
       produces: ["application/json"],
       securityDefinitions: {
@@ -57,6 +58,12 @@ async function main() {
   const { plugin, prefix } = await import("./http")
   await fastify.register(plugin, {
     prefix,
+  })
+
+  await fastify.register(fastifyCors, {
+    origin: true,
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    credentials: true,
   })
 
   await fastify.ready()

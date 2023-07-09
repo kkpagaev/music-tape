@@ -14,6 +14,7 @@
     "db:update": "prisma migrate dev"
   },
   "dependencies": {
+    "@fastify/cors": "^8.3.0",
     "@fastify/formbody": "^7.4.0",
     "@fastify/swagger": "^8.8.0",
     "@fastify/swagger-ui": "^1.9.2",
