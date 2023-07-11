@@ -1,5 +1,6 @@
+import "./conf"
+
 import Fastify, { FastifyInstance } from "fastify"
-import * as dotenv from "dotenv"
 import { PrismaClient } from "@prisma/client"
 import { prisma } from "./prisma"
 import formBody from "@fastify/formbody"
@@ -7,8 +8,6 @@ import swagger from "@fastify/swagger"
 import swaggerUi from "@fastify/swagger-ui"
 import fp from "fastify-plugin"
 import fastifyCors from "@fastify/cors"
-
-dotenv.config()
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -72,7 +71,7 @@ async function main() {
   // Run the server!
   const start = async () => {
     try {
-      await fastify.listen({ port: 3000 })
+      await fastify.listen({ port: conf.PORT })
     } catch (err) {
       fastify.log.error(err)
       process.exit(1)
