@@ -1,5 +1,5 @@
 import { RouteOptions } from "fastify"
-import { SignIn, SignInSchema } from "../../../schema/sing-in.schema"
+import { SignInSchema, SignIn } from "../../../schema/sign-in.schema"
 import { createJwt } from "../../../services/auth/jwt"
 import { findUserByEmail } from "../../../services/user/repository"
 import { UnauthorizedException } from "../../exceptions/unauthorized.exception"
