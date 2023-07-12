@@ -1,6 +1,9 @@
 import { RouteOptions } from "fastify"
 import { SignIn, SignInSchema } from "../../../schema/sing-in.schema"
-import { singIn } from "../../../services/auth/sign-in"
+import { createJwt } from "../../../services/auth/jwt"
+import { findUserByEmail } from "../../../services/user/repository"
+import { UnauthorizedException } from "../../exceptions/unauthorized.exception"
+import * as bcrypt from "bcrypt"
 
 export const options: RouteOptions = {
   method: "POST",
@@ -9,11 +12,24 @@ export const options: RouteOptions = {
     body: SignInSchema,
   },
   handler: async (req, rep) => {
-    const body = req.body as SignIn
-    const token = await singIn(body)
+    const { email, password } = req.body as SignIn
+
+    const user = await findUserByEmail(email)
+
+    if (!user) {
+      throw new UnauthorizedException()
+    }
+
+    if (!(await bcrypt.compare(password, user.password))) {
+      throw new UnauthorizedException()
+    }
+
+    const accessToken = createJwt({
+      userId: user.id,
+    })
 
     return rep.code(201).send({
-      accessToken: token
+      accessToken,
     })
   },
 }
