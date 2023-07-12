@@ -1,25 +1,19 @@
 import { RouteOptions } from "fastify"
-import { z } from "zod"
-import { PASSWORD_MIN_LENGTH } from "../../../const"
-
-const BodySchema = z
-  .object({
-    email: z.string().email(),
-    password: z.string().min(PASSWORD_MIN_LENGTH),
-  })
-  .strict()
-
-type Body = z.infer<typeof BodySchema>
+import { SignUp, SignUpSchema } from "../../../schema/sign-up.schema"
+import { signUp } from "../../../services/auth/sign-up"
 
 export const options: RouteOptions = {
   method: "POST",
   url: "/sign-up",
   schema: {
-    body: BodySchema,
+    body: SignUpSchema,
   },
   handler: async (req, rep) => {
-    return rep.code(200).send({
-      message: "Hello World",
+    const body = req.body as SignUp
+    const user = await signUp(body)
+
+    return rep.code(201).send({
+      user,
     })
   },
 }
