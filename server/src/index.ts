@@ -8,10 +8,16 @@ import swagger from "@fastify/swagger"
 import swaggerUi from "@fastify/swagger-ui"
 import fp from "fastify-plugin"
 import fastifyCors from "@fastify/cors"
+import type { User } from "@prisma/client"
 
 declare module "fastify" {
   interface FastifyInstance {
     prisma: PrismaClient
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  interface FastifyRequest {
+    user?: User
   }
 }
 
